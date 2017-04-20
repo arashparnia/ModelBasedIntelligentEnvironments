@@ -126,32 +126,30 @@ def renderResultOnImage(result, img):
 #     ig, ax = plt.subplots(figsize=(15, 20))
 #     ax.imshow(img)
 #
-# # ## Analysis of an image stored on disk
-#
-# # In[6]:
-#
-# # Load raw image file into memory
-# pathToFileInDisk = r'D:\tmp\3.jpg'
-# with open(pathToFileInDisk, 'rb') as f:
-#     data = f.read()
-#
-# # Computer Vision parameters
-# params = {'visualFeatures': 'Color,Categories'}
-#
-# headers = dict()
-# headers['Ocp-Apim-Subscription-Key'] = _key
-# headers['Content-Type'] = 'application/octet-stream'
-#
-# json = None
-#
-# result = processRequest(json, data, headers, params)
-#
-# if result is not None:
-#     # Load the original image, fetched from the URL
-#     data8uint = np.fromstring(data, np.uint8)  # Convert string to an unsigned int array
-#     img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
-#
-#     renderResultOnImage(result, img)
-#
-#     ig, ax = plt.subplots(figsize=(15, 20))
-#     ax.imshow(img)
+# ## Analysis of an image stored on disk
+
+# Load raw image file into memory
+pathToFileInDisk = r'3.jpg'
+with open(pathToFileInDisk, 'rb') as f:
+    data = f.read()
+
+# Computer Vision parameters
+params = {'visualFeatures': 'Color,Categories'}
+
+headers = dict()
+headers['Ocp-Apim-Subscription-Key'] = _key
+headers['Content-Type'] = 'application/octet-stream'
+
+json = None
+
+result = processRequest(json, data, headers, params)
+
+if result is not None:
+    # Load the original image, fetched from the URL
+    data8uint = np.fromstring(data, np.uint8)  # Convert string to an unsigned int array
+    img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+
+    renderResultOnImage(result, img)
+
+    ig, ax = plt.subplots(figsize=(15, 20))
+    ax.imshow(img)
