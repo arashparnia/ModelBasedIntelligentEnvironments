@@ -41,10 +41,24 @@ CF.Key.set(KEY)
 # with open(pathToFileInDisk, 'rb') as f:
 #     im1 = f.read()
 result1 = CF.face.detect('images/f1.jpeg')
-print(result1)
-result2 = CF.face.detect('images/f2.jpg')
-print(result2)
-CF.face.find_similars()
+
+# result2 = CF.face.detect('images/f2.jpg')
+# print(result2)
+# CF.face.find_similars()
+
+
+face1 = result1[0]
+
+faceid1 = (face1['faceId'])
+
+facelist1 = CF.face_list.add_face('images/f2.jpg', 'test1')
+
+match = CF.face.find_similars(faceid1, face_list_id=None, face_ids=facelist1, max_candidates_return=20,
+                              mode='matchPerson')
+
+print(match)
+
+
 
 #
 #
