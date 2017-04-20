@@ -7,18 +7,18 @@
 # To use this notebook, you will need to get keys to <b>Computer Vision API</b>. Visit <a href="http://www.projectoxford.ai/vision">www.projectoxford.ai/vision</a>, and then the “Try for free” button. On the “Sign in” page, use your Microsoft account to sign in and you will be able to subscribe to Computer Vision API and get free keys (Code of Conduct and TOS). After completing the sign-up process, paste your key into the variables section below. (Either the primary or the secondary key works.)
 
 # In[2]:
-
+from __future__ import print_function
 import time
 import requests
 import cv2
 import operator
 import numpy as np
-from __future__ import print_function
+
 
 # Import library to display results
 import matplotlib.pyplot as plt
 
-get_ipython().magic('matplotlib inline')
+# get_ipython().magic('matplotlib inline')
 # Display images within Jupyter
 
 
@@ -97,62 +97,61 @@ def renderResultOnImage(result, img):
         categoryName = sorted(result['categories'], key=lambda x: x['score'])[0]['name']
         cv2.putText(img, categoryName, (30, 70), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
 
-
-# ## Analysis of an image retrieved via URL
-
-# In[5]:
-
-# URL direction to image
-urlImage = 'https://oxfordportal.blob.core.windows.net/vision/Analysis/3.jpg'
-
-# Computer Vision parameters
-params = {'visualFeatures': 'Color,Categories'}
-
-headers = dict()
-headers['Ocp-Apim-Subscription-Key'] = _key
-headers['Content-Type'] = 'application/json'
-
-json = {'url': urlImage}
-data = None
-
-result = processRequest(json, data, headers, params)
-
-if result is not None:
-    # Load the original image, fetched from the URL
-    arr = np.asarray(bytearray(requests.get(urlImage).content), dtype=np.uint8)
-    img = cv2.cvtColor(cv2.imdecode(arr, -1), cv2.COLOR_BGR2RGB)
-
-    renderResultOnImage(result, img)
-
-    ig, ax = plt.subplots(figsize=(15, 20))
-    ax.imshow(img)
-
-# ## Analysis of an image stored on disk
-
-# In[6]:
-
-# Load raw image file into memory
-pathToFileInDisk = r'D:\tmp\3.jpg'
-with open(pathToFileInDisk, 'rb') as f:
-    data = f.read()
-
-# Computer Vision parameters
-params = {'visualFeatures': 'Color,Categories'}
-
-headers = dict()
-headers['Ocp-Apim-Subscription-Key'] = _key
-headers['Content-Type'] = 'application/octet-stream'
-
-json = None
-
-result = processRequest(json, data, headers, params)
-
-if result is not None:
-    # Load the original image, fetched from the URL
-    data8uint = np.fromstring(data, np.uint8)  # Convert string to an unsigned int array
-    img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
-
-    renderResultOnImage(result, img)
-
-    ig, ax = plt.subplots(figsize=(15, 20))
-    ax.imshow(img)
+# # ## Analysis of an image retrieved via URL
+#
+# # In[5]:
+#
+# # URL direction to image
+# urlImage = 'https://oxfordportal.blob.core.windows.net/vision/Analysis/3.jpg'
+#
+# # Computer Vision parameters
+# params = {'visualFeatures': 'Color,Categories'}
+#
+# headers = dict()
+# headers['Ocp-Apim-Subscription-Key'] = _key
+# headers['Content-Type'] = 'application/json'
+#
+# json = {'url': urlImage}
+# data = None
+#
+# result = processRequest(json, data, headers, params)
+#
+# if result is not None:
+#     # Load the original image, fetched from the URL
+#     arr = np.asarray(bytearray(requests.get(urlImage).content), dtype=np.uint8)
+#     img = cv2.cvtColor(cv2.imdecode(arr, -1), cv2.COLOR_BGR2RGB)
+#
+#     renderResultOnImage(result, img)
+#
+#     ig, ax = plt.subplots(figsize=(15, 20))
+#     ax.imshow(img)
+#
+# # ## Analysis of an image stored on disk
+#
+# # In[6]:
+#
+# # Load raw image file into memory
+# pathToFileInDisk = r'D:\tmp\3.jpg'
+# with open(pathToFileInDisk, 'rb') as f:
+#     data = f.read()
+#
+# # Computer Vision parameters
+# params = {'visualFeatures': 'Color,Categories'}
+#
+# headers = dict()
+# headers['Ocp-Apim-Subscription-Key'] = _key
+# headers['Content-Type'] = 'application/octet-stream'
+#
+# json = None
+#
+# result = processRequest(json, data, headers, params)
+#
+# if result is not None:
+#     # Load the original image, fetched from the URL
+#     data8uint = np.fromstring(data, np.uint8)  # Convert string to an unsigned int array
+#     img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+#
+#     renderResultOnImage(result, img)
+#
+#     ig, ax = plt.subplots(figsize=(15, 20))
+#     ax.imshow(img)
