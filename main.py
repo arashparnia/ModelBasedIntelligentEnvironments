@@ -41,19 +41,25 @@ CF.Key.set(KEY)
 # with open(pathToFileInDisk, 'rb') as f:
 #     im1 = f.read()
 result1 = CF.face.detect('images/f1.jpeg')
-
 result2 = CF.face.detect('images/f2.jpg')
-# print(result2)
-# CF.face.find_similars()
-
+result3 = CF.face.detect('images/f3.jpg')
+result4 = CF.face.detect('images/f4.jpg')
+result5 = CF.face.detect('images/f5.jpg')
 
 face1 = result1[0]
 face2 = result2[0]
+face3 = result3[0]
+face4 = result4[0]
+face5 = result5[0]
 
 faceid1 = (face1['faceId'])
 faceid2 = (face2['faceId'])
-print(faceid1)
-print(faceid2)
+faceid3 = (face3['faceId'])
+faceid4 = (face4['faceId'])
+faceid5 = (face5['faceId'])
+
+# print(faceid1)
+# print(faceid2)
 
 # CF.face_list.create('test',name='test',user_data=None)
 
@@ -61,9 +67,10 @@ print(faceid2)
 # facelist1 = CF.face_list.add_face(image='images/f2.jpg', face_list_id= 'test')
 
 # print( facelist1)
-print(CF.face_list.lists())
+# print(CF.face_list.lists())
 
-match = CF.face.find_similars(faceid1, face_list_id=None, face_ids=[faceid2], max_candidates_return=20,
+match = CF.face.find_similars(faceid5, face_list_id=None, face_ids=[faceid1, faceid2, faceid3, faceid4],
+                              max_candidates_return=20,
                               mode='matchFace')
 
 matchedFace = match[0]
@@ -73,6 +80,12 @@ if (matchedId == faceid1):
     print('face 1 identified')
 elif (matchedId == faceid2):
     print('face 2 identified')
+elif (matchedId == faceid3):
+    print('face 3 identified')
+elif (matchedId == faceid4):
+    print('face 4 identified')
+elif (matchedId == faceid5):
+    print('face 5 identified')
 else:
     print('no known face identified')
 
