@@ -42,23 +42,39 @@ CF.Key.set(KEY)
 #     im1 = f.read()
 result1 = CF.face.detect('images/f1.jpeg')
 
-# result2 = CF.face.detect('images/f2.jpg')
+result2 = CF.face.detect('images/f2.jpg')
 # print(result2)
 # CF.face.find_similars()
 
 
 face1 = result1[0]
+face2 = result2[0]
 
 faceid1 = (face1['faceId'])
+faceid2 = (face2['faceId'])
+print(faceid1)
+print(faceid2)
 
-facelist1 = CF.face_list.add_face('images/f2.jpg', 'test1')
-
-match = CF.face.find_similars(faceid1, face_list_id=None, face_ids=facelist1, max_candidates_return=20,
-                              mode='matchPerson')
-
-print(match)
+# CF.face_list.create('test',name='test',user_data=None)
 
 
+# facelist1 = CF.face_list.add_face(image='images/f2.jpg', face_list_id= 'test')
+
+# print( facelist1)
+print(CF.face_list.lists())
+
+match = CF.face.find_similars(faceid1, face_list_id=None, face_ids=[faceid2], max_candidates_return=20,
+                              mode='matchFace')
+
+matchedFace = match[0]
+matchedId = matchedFace['faceId']
+
+if (matchedId == faceid1):
+    print('face 1 identified')
+elif (matchedId == faceid2):
+    print('face 2 identified')
+else:
+    print('no known face identified')
 
 #
 #
