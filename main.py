@@ -10,10 +10,69 @@ import operator
 import numpy as np
 import cognitive_face as CF
 
+import json
+import urllib2
+import requests
+from requests.auth import HTTPBasicAuth
+
+# user = 'Arash'
+# password = '12345'
+# data = {
+#     'type':'command',
+#     'param':'switchlight',
+#     'idx':'1',
+#     'switchcmd':'Off'
+# }
+#
+# req = urllib2.Request('http://jebo.mynetgear.com:8080')
+# req.add_header('Content-Type', 'application/json')
+# req.add_header('Authorization','Basic QXJhc2g6MTIzNDU=')
+#
+#
+# response = urllib2.urlopen(req, json.dumps(data))
+# print(response)
 
 
 
+import base64
 
+# encoded = base64.b64encode(b'Arash:12345')
+# print (encoded)
+
+
+# url = 'http://jebo.mynetgear.com:8080'
+# payload1 = {
+#     "type":"command",
+#     "param":"Light/Switch",
+#     "idx":"1",
+#     "switchcmd":"Off"
+# }
+
+#
+# r = requests.post(url, data=json.dumps(payload1), headers=headers)
+# print(r.url)
+# print(r.raw)
+# print (r)
+# r = requests.get(url, headers=headers)
+# print(r.url)
+# print(r.raw)
+# print (r)
+
+headers = {'Authorization': 'Basic QXJhc2g6MTIzNDU='}
+request = urllib2.Request("http://jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=8&switchcmd=Off",
+                          headers=headers)
+request = urllib2.Request("http://jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=8&switchcmd=On",
+                          headers=headers)
+contents = urllib2.urlopen(request).read()
+
+# https://api.telegram.org/bot353028451:AAEoXtjebnEbxWLJORYLGhTyie_co3u0HRo/sendmessage?chat_id=277127047&text=test
+
+
+
+# print(urllib.urlopen('http://jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=1&switchcmd=On').read())
+# urllib2.urlopen('http://arash:12345@jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=1&switchcmd=On')
+# urllib2.urlopen('http://arash:12345@jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=1&switchcmd=Off')
+# http://arash:12345@jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=1&switchcmd=On
 
 # Import library to display results
 import matplotlib.pyplot as plt
@@ -42,11 +101,17 @@ CF.Key.set(KEY)
 # pathToFileInDisk = r'images/f1.jpeg'
 # with open(pathToFileInDisk, 'rb') as f:
 #     im1 = f.read()
-result1 = CF.face.detect('images/f1.jpeg')
-result2 = CF.face.detect('images/f2.jpg')
-result3 = CF.face.detect('images/f3.jpg')
-result4 = CF.face.detect('images/f4.jpg')
-result5 = CF.face.detect('images/f5.jpg')
+result1 = CF.face.detect('images/f1.jpeg', landmarks=True, attributes='age,gender')
+result2 = CF.face.detect('images/f2.jpg', landmarks=True, attributes='age,gender')
+result3 = CF.face.detect('images/f3.jpg', landmarks=True, attributes='age,gender')
+result4 = CF.face.detect('images/f4.jpg', landmarks=True, attributes='age,gender')
+result5 = CF.face.detect('images/f5.jpg', landmarks=True, attributes='age,gender')
+print(result1)
+print(result2)
+print(result3)
+print(result4)
+print(result5)
+
 
 face1 = result1[0]
 face2 = result2[0]
@@ -71,9 +136,10 @@ faceid5 = (face5['faceId'])
 # print( facelist1)
 # print(CF.face_list.lists())
 
-match = CF.face.find_similars(faceid5, face_list_id=None, face_ids=[faceid1, faceid2, faceid3, faceid4],
+match = CF.face.find_similars(faceid5, face_list_id=None, face_ids=[faceid2, faceid3, faceid4],
                               max_candidates_return=20,
                               mode='matchFace')
+
 
 matchedFace = match[0]
 matchedId = matchedFace['faceId']
@@ -84,10 +150,12 @@ elif (matchedId == faceid2):
     print('face 2 identified')
 elif (matchedId == faceid3):
     print('face 3 identified')
+    # urllib2.urlopen("http://arash:12345@jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=1&switchcmd=On")
 elif (matchedId == faceid4):
     print('face 4 identified')
 elif (matchedId == faceid5):
     print('face 5 identified')
+    cv2.imshow('image', face5)
 else:
     print('no known face identified')
 
