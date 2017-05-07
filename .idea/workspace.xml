@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c7cf4f5-01ce-4f54-9600-5ae3a931fabc" name="Default" comment="face detection working">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Cognitive-Face-Python/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Cognitive-Face-Python/.pylintrc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/FaceDetect-master/.gitattributes" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/FaceDetect-master/.gitignore" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cognitive-Face-Python" afterPath="$PROJECT_DIR$/Cognitive-Face-Python" />
+    <list default="true" id="1c7cf4f5-01ce-4f54-9600-5ae3a931fabc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -481,7 +476,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494184837237</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="face detection working">
+      <created>1494184919584</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1494184919584</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView">
