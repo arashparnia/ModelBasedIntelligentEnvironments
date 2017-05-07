@@ -26,13 +26,13 @@ def match_face(webcam_image):
     #     im1 = f.read()
     result_webcam = CF.face.detect(webcam_image, landmarks=True, attributes='age,gender')
 
-    result_arash = CF.face.detect('images/arash.jpg', landmarks=True, attributes='age,gender')
+    result_arash = CF.face.detect('images/arash.jpg', attributes='age,gender')
 
-    result1 = CF.face.detect('images/f1.jpeg', landmarks=True, attributes='age,gender')
-    result2 = CF.face.detect('images/f2.jpg', landmarks=True, attributes='age,gender')
-    result3 = CF.face.detect('images/f3.jpg', landmarks=True, attributes='age,gender')
-    result4 = CF.face.detect('images/f4.jpg', landmarks=True, attributes='age,gender')
-    result5 = CF.face.detect('images/f5.jpg', landmarks=True, attributes='age,gender')
+    result1 = CF.face.detect('images/f1.jpeg', attributes='age,gender')
+    result2 = CF.face.detect('images/f2.jpg', attributes='age,gender')
+    result3 = CF.face.detect('images/f3.jpg', attributes='age,gender')
+    result4 = CF.face.detect('images/f4.jpg', attributes='age,gender')
+    result5 = CF.face.detect('images/f5.jpg', attributes='age,gender')
 
     print(result_webcam)
 
@@ -52,8 +52,6 @@ def match_face(webcam_image):
     faceid4 = (face4['faceId'])
     faceid5 = (face5['faceId'])
 
-    # print(faceid1)
-    # print(faceid2)
 
     # CF.face_list.create('test',name='test',user_data=None)
 
