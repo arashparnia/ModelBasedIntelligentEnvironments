@@ -14,6 +14,8 @@ import json
 import urllib2
 import requests
 from requests.auth import HTTPBasicAuth
+from webcam import get_image
+
 
 # user = 'Arash'
 # password = '12345'
@@ -58,12 +60,17 @@ import base64
 # print(r.raw)
 # print (r)
 
-headers = {'Authorization': 'Basic QXJhc2g6MTIzNDU='}
-request = urllib2.Request("http://jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=8&switchcmd=Off",
-                          headers=headers)
-request = urllib2.Request("http://jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=8&switchcmd=On",
-                          headers=headers)
-contents = urllib2.urlopen(request).read()
+
+
+
+# headers = {'Authorization': 'Basic QXJhc2g6MTIzNDU='}
+# request = urllib2.Request("http://jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=8&switchcmd=Off",
+#                           headers=headers)
+# request = urllib2.Request("http://jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=8&switchcmd=On",
+#                           headers=headers)
+# contents = urllib2.urlopen(request).read()
+
+
 
 # https://api.telegram.org/bot353028451:AAEoXtjebnEbxWLJORYLGhTyie_co3u0HRo/sendmessage?chat_id=277127047&text=test
 
@@ -101,24 +108,33 @@ CF.Key.set(KEY)
 # pathToFileInDisk = r'images/f1.jpeg'
 # with open(pathToFileInDisk, 'rb') as f:
 #     im1 = f.read()
+result_webcam = CF.face.detect(get_image(), landmarks=True, attributes='age,gender')
+
+result_arash = CF.face.detect('images/arash.jpg', landmarks=True, attributes='age,gender')
+
 result1 = CF.face.detect('images/f1.jpeg', landmarks=True, attributes='age,gender')
 result2 = CF.face.detect('images/f2.jpg', landmarks=True, attributes='age,gender')
 result3 = CF.face.detect('images/f3.jpg', landmarks=True, attributes='age,gender')
 result4 = CF.face.detect('images/f4.jpg', landmarks=True, attributes='age,gender')
 result5 = CF.face.detect('images/f5.jpg', landmarks=True, attributes='age,gender')
-print(result1)
+
+print(result_webcam)
+print(result_arash)
 print(result2)
 print(result3)
 print(result4)
 print(result5)
 
-
+face_webcam = result_webcam[0]
+face_arash = result_arash[0]
 face1 = result1[0]
 face2 = result2[0]
 face3 = result3[0]
 face4 = result4[0]
 face5 = result5[0]
 
+faceid_webcam = (face_webcam['faceId'])
+faceid_arash = (face_arash['faceId'])
 faceid1 = (face1['faceId'])
 faceid2 = (face2['faceId'])
 faceid3 = (face3['faceId'])
@@ -136,7 +152,8 @@ faceid5 = (face5['faceId'])
 # print( facelist1)
 # print(CF.face_list.lists())
 
-match = CF.face.find_similars(faceid5, face_list_id=None, face_ids=[faceid2, faceid3, faceid4],
+match = CF.face.find_similars(faceid_webcam, face_list_id=None,
+                              face_ids=[faceid_arash, faceid1, faceid2, faceid3, faceid4],
                               max_candidates_return=20,
                               mode='matchFace')
 
@@ -144,8 +161,8 @@ match = CF.face.find_similars(faceid5, face_list_id=None, face_ids=[faceid2, fac
 matchedFace = match[0]
 matchedId = matchedFace['faceId']
 
-if (matchedId == faceid1):
-    print('face 1 identified')
+if (matchedId == faceid_arash):
+    print('face arash identified')
 elif (matchedId == faceid2):
     print('face 2 identified')
 elif (matchedId == faceid3):
