@@ -176,6 +176,9 @@ elif (matchedId == faceid5):
 else:
     print('no known face identified')
 
+
+
+# # urllib2.urlopen("http://arash:12345@jebo.mynetgear.com:8080/json.htm?type=command&param=switchlight&idx=1&switchcmd=On")
 #
 #
 # # ## Helper functions
