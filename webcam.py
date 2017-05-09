@@ -129,10 +129,10 @@ def match_face(webcam_image):
             result_face = ('arash identified')
         elif (matchedId == '3d554532-d389-47f8-890b-6ff343058285'):
             result_face = ('michel identified')
-            recognized_working_steve()
+            recognized_working_steve_on()
         elif (matchedId == 'f09299d7-518d-4390-9245-7794933960f2'):
             result_face = ('aart identified')
-            recognized_chaotic_chris()
+            recognized_chaotic_chris_on()
             # elif (matchedId == faceid5):
             #     result_face = ('face 5 identified')
 
