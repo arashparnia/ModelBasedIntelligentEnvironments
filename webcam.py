@@ -26,6 +26,8 @@ from requests.auth import HTTPBasicAuth
 # contents = urllib2.urlopen(request).read()
 
 
+current_sec = lambda: int(round(time.time() * 1000))
+
 
 
 
@@ -140,13 +142,15 @@ def match_face(webcam_image):
 casc_path = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(casc_path)
 face_detected = False
-# while not face_detected:
-while True:
+# video_capture.release()
+# cv2.destroyAllWindows()
+
+while not face_detected:
+    # while True:
     video_capture = cv2.VideoCapture(0)
 
     # Capture frame-by-frame
     ret, frame = video_capture.read()
-    original_frame = frame
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -159,24 +163,26 @@ while True:
     )
 
     # recognizing face
-    if divmod(calendar.timegm(time.gmtime()), 20) == 0:
-        for (x, y, w, h) in faces:
-            cv2.imwrite('the_face.jpg', the_face)
-            print("Face Detected")
-            face_detected = True
-        print("processing face")
-        result_face = match_face('the_face.jpg')
-        print(result_face)
+
+    # print(current_sec() % 10)
+    # if current_sec() % 10 == 0:
+    for (x, y, w, h) in faces:
+        # the_face = frame[y:y + h, x:x + w]
+        cv2.imwrite('the_face.jpg', frame)
+        print("Face Detected")
+        face_detected = True
+
+    cv2.imshow("frame", frame)
 
 
 
 
     # Draw a rectangle around the faces
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        the_face = frame[y:y + h, x:x + w]
+    # for (x, y, w, h) in faces:
+    #     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    #
 
-    cv2.imshow("frame", frame)
+    # cv2.imshow("frame", frame)
 
     import threading
 
@@ -195,14 +201,16 @@ while True:
 
 
     # time.sleep(15)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     break
 
 
 video_capture.release()
 cv2.destroyAllWindows()
 
-
+print("processing face")
+result_face = match_face('the_face.jpg')
+print(result_face)
 
 
 
