@@ -55,17 +55,17 @@ def telegram_message_working_steve(m):
     contents = urllib2.urlopen(request).read()
 
 
-def rl(p, q):
-    p = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
-    q = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
+def rl(a):
+    # p = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
+    # q = preprocessing.normalize(p, axis=1, norm='l1', copy=True)
 
-    n = 10
+    n = 5
     #
     # print(pq)
     # arms = np.random.rand(n)
     # print (arms)
-    pq = np.append(p, q)
-    arms = pq
+    # pq = np.append(p, p)
+    arms = a
 
     eps = 0.1
 
@@ -85,7 +85,7 @@ def rl(p, q):
 
     plt.xlabel("Plays")
     plt.ylabel("Mean Reward")
-    for i in range(500):
+    for i in range(50):
         if random.random() > eps:
             choice = bestArm(av)
             counts[choice] += 1
@@ -123,11 +123,13 @@ def rl(p, q):
 
 
 p1111 = [
-    6,
+    7,
     11,
     11,
     8,
-    7]
+    9,
+    11
+]
 
 p1112 = [
     13,
@@ -195,8 +197,7 @@ numpy.average(p1115))
 p = [1 - (numpy.average(p1111)) / sum_of_p, 1 - (numpy.average(p1112)) / sum_of_p,
      1 - (numpy.average(p1113)) / sum_of_p, 1 - (numpy.average(p1114)) / sum_of_p,
      1 - (numpy.average(p1115)) / sum_of_p]
-# print(p)
-# print (sum(p))
+
 sum_of_q = (numpy.average(q1111)) + (numpy.average(q1112)) + (numpy.average(q1113)) + (numpy.average(q1114)) + (
 numpy.average(q1115))
 
@@ -204,22 +205,10 @@ q = [1 - (numpy.average(q1111)) / sum_of_q, 1 - (numpy.average(q1112)) / sum_of_
      1 - (numpy.average(q1113)) / sum_of_q, 1 - (numpy.average(q1114)) / sum_of_q,
      1 - (numpy.average(q1115)) / sum_of_q]
 
-# pn = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
-# pn = pn[0]
-# print (pn)
-
-###################################################################
-# print(p)
-# p = preprocessing.normalize(p, axis=1, norm='l1', copy=True)
-# q = preprocessing.normalize(q, axis=1, norm='l1', copy=True)
-
-# print(p)
+# for i in range(100): print("p = ",rl(p) , "q = ",rl(q))
 
 # exit(0)
-###################################################################
 
-
-#
 
 chaiotic_chris_warning_message = ['Chris, if you close the door now within 8 seconds, you will be faster than Steve!',
                                   'Hey Chris! Close the door, you do not want to be slower than your grandma?',
@@ -268,19 +257,19 @@ for i in range(1, 2):
     print (door, Working_Steve_presence, Working_Steve_camera)
 
     if (door == 1 and Chaotic_Chris_presence == 1 and Chaotic_Chris_camera == 1):
-        i = rl(p, q)
-        while i > 5: i = rl(p, q)
+        i = rl(p)
+        # while i > 5: i = rl(p, q)
         # m = np.random.choice(chaiotic_chris_warning_message, 1, p)
         m = chaiotic_chris_warning_message[i]
         print ("chaiotic_chris_warning_message", m)
         telegram_message_chaitic_chris(m)
 
     if (door == 1 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
-        # i = rl(p,q)
+        i = rl(q)
         # while i < 6: i = rl(p,q)
-        m = np.random.choice(working_steve_warning_message, 1, q)
-        m = m[0]
-        # m = working_steve_warning_message[10-i]
+        # m = np.random.choice(working_steve_warning_message, 1, q)
+        # m = m[0]
+        m = working_steve_warning_message[i]
         print ("working_steve_warning_message", m)
         telegram_message_working_steve(m)
 
