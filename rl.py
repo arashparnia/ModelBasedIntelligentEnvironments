@@ -1,105 +1,233 @@
-# https://github.com/NathanEpstein/reinforce
+import urllib2
+from pandas import json
 
+from sklearn import preprocessing
+import numpy
+import pandas
 import random
 import bisect
 import collections
+import numpy as np
 
 
-def cdf(weights):
-    total = sum(weights)
-    result = []
-    cumsum = 0
-    for w in weights:
-        cumsum += w
-        result.append(cumsum / total)
-    return result
+def read_status_for(id):
+    headers = {'Authorization': 'Basic QXJhc2g6MTIzNDU='}
+
+    request = urllib2.Request(
+        "http://jebo.mynetgear.com:8080/json.htm?type=devices&rid=" + str(id),
+        headers=headers)
+
+    contents = urllib2.urlopen(request).read()
+    r = json.loads(contents)
+    r = r["result"]
+    r = r[0]
+    r = r['Status']
+    if (r == 'On'):
+        return (1)
+    elif (r == 'Off'):
+        return (0)
 
 
-def choice(population, weights):
-    assert len(population) == len(weights)
-    cdf_vals = cdf(weights)
-    x = random.random()
-    idx = bisect.bisect(cdf_vals, x)
-    return population[idx]
+def telegram_message_chaitic_chris(m):
+    headers = {'Authorization': ' a'}
+    # working steve
+    # request_text = "https://api.telegram.org/bot349402760:AAHCI67j_KP4yL8NFB83gAvNQkxMFdPQHgw/sendmessage?chat_id=354794269&text=" + str(q)
+    # chaitic chris
+    request_text = "https://api.telegram.org/bot354053678:AAFlWOgzArXbF3JaQ0oZdIHxX0bruXQzdMY/sendmessage?chat_id=376206693&text=" + str(
+        m)
+
+    request = urllib2.Request(request_text, headers=headers)
+
+    contents = urllib2.urlopen(request).read()
 
 
-weights = [0.6, 0.5, 0.5, 0.9, 0.4]
-population = '12345'
-counts = collections.defaultdict(int)
-for i in range(100):
-    counts[choice(population, weights)] += 1
+def telegram_message_working_steve(m):
+    headers = {'Authorization': ' a'}
+    # working steve
+    request_text = "https://api.telegram.org/bot349402760:AAHCI67j_KP4yL8NFB83gAvNQkxMFdPQHgw/sendmessage?chat_id=354794269&text=" + str(
+        m)
+    # chaitic chris
+    # request_text = "https://api.telegram.org/bot354053678:AAFlWOgzArXbF3JaQ0oZdIHxX0bruXQzdMY/sendmessage?chat_id=376206693&text=" + str(m)
 
-import operator
+    request = urllib2.Request(request_text, headers=headers)
 
-x = counts
-sorted_x = sorted(x.items(), key=operator.itemgetter(1), reverse=True)
-print(sorted_x)
-
-# % test.py
-# defaultdict(<type 'int'>, {'A': 3066, 'C': 2964, 'B': 3970})
+    contents = urllib2.urlopen(request).read()
 
 
+unknown_presence = read_status_for(18)
 
+Chaotic_Chris_presence = read_status_for(14)
+Chaotic_Chris_camera = read_status_for(16)
 
+Working_Steve_presence = read_status_for(15)
+Working_Steve_camera = read_status_for(17)
 
+door = read_status_for(10)
 
-exit(0)
+print(door, Chaotic_Chris_presence, Chaotic_Chris_camera)
+print (door, Working_Steve_presence, Working_Steve_camera)
 
-
-def weighted_choice(choices):
-    total = sum(w for c, w in choices)
-    r = random.uniform(0, total)
-    upto = 0
-    for c, w in choices:
-        if upto + w >= r:
-            return c
-        upto += w
-    assert False, "Shouldn't get here"
+# current_status_chaiotic_chris = [Chaotic_Chris_camera,Chaotic_Chris_presence,door]
+#
+#
+# print("current status " , current_status_chaiotic_chris)
 
 
 
 
-from reinforce.learn import MarkovAgent
+p1111 = [
+    6,
+    11,
+    11,
+    8,
+    7]
 
-observations = [
-    {'state_transitions': [
-        {'state': 'low', 'action': 'climb', 'state_': 'mid'},
-        {'state': 'mid', 'action': 'climb', 'state_': 'high'},
-        {'state': 'high', 'action': 'sink', 'state_': 'mid'},
-        {'state': 'mid', 'action': 'sink', 'state_': 'low'},
-        {'state': 'low', 'action': 'sink', 'state_': 'bottom'}
-    ],
-        'reward': 0
-    },
-    {'state_transitions': [
-        {'state': 'low', 'action': 'climb', 'state_': 'mid'},
-        {'state': 'mid', 'action': 'climb', 'state_': 'high'},
-        {'state': 'high', 'action': 'climb', 'state_': 'top'},
-    ],
-        'reward': 0
-    }
+p1112 = [
+    13,
+    12,
+    12,
+    10,
+    12]
+
+p1113 = [
+    13,
+    13,
+    11,
+    13,
+    16]
+
+p1114 = [
+    14,
+    17,
+    18,
+    14,
+    14]
+
+p1115 = [
+    24,
+    20,
+    28,
+    30,
+    22
 ]
 
-trap_states = [
-    {
-        'state_transitions': [
-            {'state': 'bottom', 'action': 'sink', 'state_': 'bottom'},
-            {'state': 'bottom', 'action': 'climb', 'state_': 'bottom'}
-        ],
-        'reward': 0
-    },
-    {
-        'state_transitions': [
-            {'state': 'top', 'action': 'sink', 'state_': 'top'},
-            {'state': 'top', 'action': 'climb', 'state_': 'top'},
-        ],
-        'reward': 1
-    },
-]
+q1111 = [
+    12,
+    12,
+    12,
+    13,
+    11]
+q1112 = [
+    14,
+    12,
+    13,
+    14,
+    12]
+q1113 = [
+    15,
+    18,
+    14,
+    17,
+    14]
+q1114 = [
+    18,
+    18,
+    24,
+    22,
+    21]
+q1115 = [
+    36,
+    30,
+    24,
+    21,
+    21]
 
-mark = MarkovAgent(observations + trap_states)
-mark.learn()
+sum_of_p = (numpy.average(p1111)) + (numpy.average(p1112)) + (numpy.average(p1113)) + (numpy.average(p1114)) + (
+numpy.average(p1115))
 
-print(mark.policy)
-# {'high': 'climb', 'top': 'sink', 'bottom': 'sink', 'low': 'climb', 'mid': 'climb'}
-# NOTE: policy in top and bottom states is chosen randomly (doesn't affect state)
+p = [1 - (numpy.average(p1111)) / sum_of_p, 1 - (numpy.average(p1112)) / sum_of_p,
+     1 - (numpy.average(p1113)) / sum_of_p, 1 - (numpy.average(p1114)) / sum_of_p,
+     1 - (numpy.average(p1115)) / sum_of_p]
+# print(p)
+# print (sum(p))
+sum_of_q = (numpy.average(q1111)) + (numpy.average(q1112)) + (numpy.average(q1113)) + (numpy.average(q1114)) + (
+numpy.average(q1115))
+
+q = [1 - (numpy.average(q1111)) / sum_of_q, 1 - (numpy.average(q1112)) / sum_of_q,
+     1 - (numpy.average(q1113)) / sum_of_q, 1 - (numpy.average(q1114)) / sum_of_q,
+     1 - (numpy.average(q1115)) / sum_of_q]
+
+# pn = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
+# pn = pn[0]
+# print (pn)
+
+
+
+#
+
+chaiotic_chris_warning_message = ['Chris, if you close the door now within 8 seconds, you will be faster than Steve!',
+                                  'Hey Chris! Close the door, you do not want to be slower than your grandma?',
+                                  'Hey Chris! You would be awesome if you could close the door, it will save some energy!',
+                                  'Can you please close the door Chris?',
+                                  'Close the door Chris!'
+                                  ]
+
+chaiotic_chris_thank_you_message = [
+    'Thank you for closing the door, you will become the fastest family member if you keep this up!',
+    'At least you are better than Feyenoord and closed the door behind you!',
+    'Thanks Chris! You are the best!',
+    'Thank you for closing the door, Chris!',
+    'Thank you'
+    ]
+
+working_steve_warning_message = [
+    'Can you close the door again Steve? By closing the door you will even save more money!',
+    'Can you close the door, Steve? You are on your way to save more energy than you did last month!',
+    'If you close the door, you will do better than your neighbours!',
+    'Can you please close the door, Steve?',
+    'Close the door Steve!'
+    ]
+
+working_steve_thank_you_message = [
+    'Thank you for closing the door, you will become the fastest family member if you keep this up!',
+    'At least you are better than Feyenoord and closed the door behind you!',
+    'Thanks Chris! You are the best!',
+    'Thank you for closing the door, Chris!',
+    'Thank you'
+    ]
+
+if (door == 1 and Chaotic_Chris_presence == 1 and Chaotic_Chris_camera == 1):
+    m = np.random.choice(chaiotic_chris_warning_message, 1, p)
+    print ("chaiotic_chris_warning_message", m)
+    telegram_message_chaitic_chris(m)
+
+if (door == 1 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
+    m = np.random.choice(working_steve_warning_message, 1, p)
+    print ("working_steve_warning_message", m)
+    telegram_message_working_steve(m)
+
+if door == 0 and Chaotic_Chris_presence == 1 and Chaotic_Chris_camera == 1:
+    m = np.random.choice(chaiotic_chris_thank_you_message, 1, p)
+    print ("thank chaiotic_chris_thank_you_message message", m)
+    telegram_message_chaitic_chris(m)
+
+if (door == 0 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
+    m = np.random.choice(working_steve_thank_you_message, 1, p)
+    print ("working_steve_thank_you_message", m)
+    telegram_message_working_steve(m)
+
+if (door == 0 and Working_Steve_presence == 0 and Working_Steve_camera == 0
+    and Chaotic_Chris_presence == 0 and Chaotic_Chris_camera == 0 and unknown_presence == 0
+    ):
+    m = "DOOR CLOSED NO PRESENCE DETECTED"
+    print (m)
+    telegram_message_chaitic_chris(m)
+    telegram_message_working_steve
+
+unknown_presence
+
+if (unknown_presence == 1):
+    m = "WARNING! UNKNOWN PRESENCE DETECTED"
+    print (m)
+    telegram_message_chaitic_chris(m)
+    telegram_message_working_steve

@@ -2,6 +2,8 @@ from __future__ import print_function
 
 import calendar
 import time
+from pprint import pprint
+
 import requests
 import cv2
 import operator
@@ -27,6 +29,9 @@ from requests.auth import HTTPBasicAuth
 
 
 current_sec = lambda: int(round(time.time() * 1000))
+
+
+# import requests
 
 
 
