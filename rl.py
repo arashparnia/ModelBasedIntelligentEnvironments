@@ -8,6 +8,7 @@ import random
 import bisect
 import collections
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def read_status_for(id):
@@ -54,18 +55,64 @@ def telegram_message_working_steve(m):
     contents = urllib2.urlopen(request).read()
 
 
-unknown_presence = read_status_for(18)
+def rl(p, q):
+    p = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
+    q = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
 
-Chaotic_Chris_presence = read_status_for(14)
-Chaotic_Chris_camera = read_status_for(16)
+    n = 10
+    #
+    # print(pq)
+    # arms = np.random.rand(n)
+    # print (arms)
+    pq = np.append(p, q)
+    arms = pq
 
-Working_Steve_presence = read_status_for(15)
-Working_Steve_camera = read_status_for(17)
+    eps = 0.1
 
-door = read_status_for(10)
+    av = np.ones(n)  # initialize action-value array
+    counts = np.zeros(n)  # stores counts of how many times we've taken a particular action
 
-print(door, Chaotic_Chris_presence, Chaotic_Chris_camera)
-print (door, Working_Steve_presence, Working_Steve_camera)
+    def reward(prob):
+        total = 0
+        for i in range(10):
+            if random.random() < prob:
+                total += 1
+        return total
+
+    # our bestArm function is much simpler now
+    def bestArm(a):
+        return np.argmax(a)  # returns index of element with greatest value
+
+    plt.xlabel("Plays")
+    plt.ylabel("Mean Reward")
+    for i in range(500):
+        if random.random() > eps:
+            choice = bestArm(av)
+            counts[choice] += 1
+            k = counts[choice]
+            rwd = reward(arms[choice])
+            old_avg = av[choice]
+            new_avg = old_avg + (1 / k) * (rwd - old_avg)  # update running avg
+            av[choice] = new_avg
+        else:
+            choice = np.where(arms == np.random.choice(arms))[0][0]  # randomly choose an arm (returns index)
+            counts[choice] += 1
+            k = counts[choice]
+            rwd = reward(arms[choice])
+            old_avg = av[choice]
+            new_avg = old_avg + (1 / k) * (rwd - old_avg)  # update running avg
+            av[choice] = new_avg
+        # have to use np.average and supply the weights to get a weighted average
+        runningMean = np.average(av, weights=np.array([counts[j] / np.sum(counts) for j in range(len(counts))]))
+        plt.scatter(i, runningMean)
+
+    best = bestArm(counts)
+    return (best)
+    # plt.show()
+
+
+
+
 
 # current_status_chaiotic_chris = [Chaotic_Chris_camera,Chaotic_Chris_presence,door]
 #
@@ -161,6 +208,15 @@ q = [1 - (numpy.average(q1111)) / sum_of_q, 1 - (numpy.average(q1112)) / sum_of_
 # pn = pn[0]
 # print (pn)
 
+###################################################################
+# print(p)
+# p = preprocessing.normalize(p, axis=1, norm='l1', copy=True)
+# q = preprocessing.normalize(q, axis=1, norm='l1', copy=True)
+
+# print(p)
+
+# exit(0)
+###################################################################
 
 
 #
@@ -189,45 +245,67 @@ working_steve_warning_message = [
     ]
 
 working_steve_thank_you_message = [
-    'Thank you for closing the door, you will become the fastest family member if you keep this up!',
-    'At least you are better than Feyenoord and closed the door behind you!',
-    'Thanks Chris! You are the best!',
-    'Thank you for closing the door, Chris!',
+    'Thank you for closing the door Working Steve! You have saved some more money by doing this.',
+    'Thanks Steve! Keep it up to save more than you did last month',
+    'Keep up! Save some more and your family will become the best of your neighbourhood. ',
+    'Thank you for closing the door, Steve!',
     'Thank you'
     ]
 
-if (door == 1 and Chaotic_Chris_presence == 1 and Chaotic_Chris_camera == 1):
-    m = np.random.choice(chaiotic_chris_warning_message, 1, p)
-    print ("chaiotic_chris_warning_message", m)
-    telegram_message_chaitic_chris(m)
+for i in range(1, 2):
 
-if (door == 1 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
-    m = np.random.choice(working_steve_warning_message, 1, p)
-    print ("working_steve_warning_message", m)
-    telegram_message_working_steve(m)
+    unknown_presence = read_status_for(18)
 
-if door == 0 and Chaotic_Chris_presence == 1 and Chaotic_Chris_camera == 1:
-    m = np.random.choice(chaiotic_chris_thank_you_message, 1, p)
-    print ("thank chaiotic_chris_thank_you_message message", m)
-    telegram_message_chaitic_chris(m)
+    Chaotic_Chris_presence = read_status_for(14)
+    Chaotic_Chris_camera = read_status_for(16)
 
-if (door == 0 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
-    m = np.random.choice(working_steve_thank_you_message, 1, p)
-    print ("working_steve_thank_you_message", m)
-    telegram_message_working_steve(m)
+    Working_Steve_presence = read_status_for(15)
+    Working_Steve_camera = read_status_for(17)
 
-if (door == 0 and Working_Steve_presence == 0 and Working_Steve_camera == 0
-    and Chaotic_Chris_presence == 0 and Chaotic_Chris_camera == 0 and unknown_presence == 0
-    ):
-    m = "DOOR CLOSED NO PRESENCE DETECTED"
-    print (m)
-    telegram_message_chaitic_chris(m)
-    telegram_message_working_steve
+    door = read_status_for(10)
 
-unknown_presence
+    print(door, Chaotic_Chris_presence, Chaotic_Chris_camera)
+    print (door, Working_Steve_presence, Working_Steve_camera)
 
-if (unknown_presence == 1):
-    m = "WARNING! UNKNOWN PRESENCE DETECTED"
-    print (m)
-    telegram_message_chaitic_chris(m)
-    telegram_message_working_steve
+    if (door == 1 and Chaotic_Chris_presence == 1 and Chaotic_Chris_camera == 1):
+        i = rl(p, q)
+        while i > 5: i = rl(p, q)
+        # m = np.random.choice(chaiotic_chris_warning_message, 1, p)
+        m = chaiotic_chris_warning_message[i]
+        print ("chaiotic_chris_warning_message", m)
+        telegram_message_chaitic_chris(m)
+
+    if (door == 1 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
+        # i = rl(p,q)
+        # while i < 6: i = rl(p,q)
+        m = np.random.choice(working_steve_warning_message, 1, q)
+        m = m[0]
+        # m = working_steve_warning_message[10-i]
+        print ("working_steve_warning_message", m)
+        telegram_message_working_steve(m)
+
+    if door == 0 and Chaotic_Chris_presence == 1 and Chaotic_Chris_camera == 1:
+        m = np.random.choice(chaiotic_chris_thank_you_message, 1, p)
+        m = m[0]
+        print ("chaiotic_chris_thank_you_message", m)
+        telegram_message_chaitic_chris(m)
+
+    if (door == 0 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
+        m = np.random.choice(working_steve_thank_you_message, 1, q)
+        m = m[0]
+        print ("working_steve_thank_you_message", m)
+        telegram_message_working_steve(m)
+
+    if (door == 0 and Working_Steve_presence == 0 and Working_Steve_camera == 0
+        and Chaotic_Chris_presence == 0 and Chaotic_Chris_camera == 0 and unknown_presence == 0
+        ):
+        m = "DOOR CLOSED NO PRESENCE DETECTED"
+        print (m)
+        telegram_message_chaitic_chris(m)
+        telegram_message_working_steve(m)
+
+    if (unknown_presence == 1):
+        m = "WARNING! UNKNOWN PRESENCE DETECTED"
+        print (m)
+        telegram_message_chaitic_chris(m)
+        telegram_message_working_steve(m)
