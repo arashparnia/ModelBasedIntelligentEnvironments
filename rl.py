@@ -56,17 +56,8 @@ def telegram_message_working_steve(m):
 
 
 def rl(a):
-    # p = preprocessing.normalize(p, axis=1, norm='l2', copy=True)
-    # q = preprocessing.normalize(p, axis=1, norm='l1', copy=True)
-
     n = 5
-    #
-    # print(pq)
-    # arms = np.random.rand(n)
-    # print (arms)
-    # pq = np.append(p, p)
     arms = a
-
     eps = 0.1
 
     av = np.ones(n)  # initialize action-value array
@@ -85,7 +76,7 @@ def rl(a):
 
     plt.xlabel("Plays")
     plt.ylabel("Mean Reward")
-    for i in range(50):
+    for i in range(100):
         if random.random() > eps:
             choice = bestArm(av)
             counts[choice] += 1
@@ -107,8 +98,9 @@ def rl(a):
         plt.scatter(i, runningMean)
 
     best = bestArm(counts)
-    return (best)
     # plt.show()
+    return (best)
+
 
 
 
@@ -165,7 +157,8 @@ q1111 = [
     12,
     12,
     13,
-    11]
+    11
+        ]
 q1112 = [
     14,
     12,
@@ -205,17 +198,19 @@ q = [1 - (numpy.average(q1111)) / sum_of_q, 1 - (numpy.average(q1112)) / sum_of_
      1 - (numpy.average(q1113)) / sum_of_q, 1 - (numpy.average(q1114)) / sum_of_q,
      1 - (numpy.average(q1115)) / sum_of_q]
 
-# for i in range(100): print("p = ",rl(p) , "q = ",rl(q))
 
-# exit(0)
+for i in range(100): print("p = ",rl(p) , "q = ",rl(q))
+
+exit(0)
 
 
-chaiotic_chris_warning_message = ['Chris, if you close the door now within 8 seconds, you will be faster than Steve!',
-                                  'Hey Chris! Close the door, you do not want to be slower than your grandma?',
-                                  'Hey Chris! You would be awesome if you could close the door, it will save some energy!',
-                                  'Can you please close the door Chris?',
-                                  'Close the door Chris!'
-                                  ]
+chaiotic_chris_warning_message = [
+    'Chris, if you close the door now within 8 seconds, you will be faster than Steve!',
+    'Hey Chris! Close the door, you do not want to be slower than your grandma?',
+    'Hey Chris! You would be awesome if you could close the door, it will save some energy!',
+    'Can you please close the door Chris?',
+    'Close the door Chris!'
+    ]
 
 chaiotic_chris_thank_you_message = [
     'Thank you for closing the door, you will become the fastest family member if you keep this up!',
@@ -266,9 +261,6 @@ for i in range(1, 2):
 
     if (door == 1 and Working_Steve_presence == 1 and Working_Steve_camera == 1):
         i = rl(q)
-        # while i < 6: i = rl(p,q)
-        # m = np.random.choice(working_steve_warning_message, 1, q)
-        # m = m[0]
         m = working_steve_warning_message[i]
         print ("working_steve_warning_message", m)
         telegram_message_working_steve(m)
